@@ -264,12 +264,12 @@
       top: 65.5%;         /* ← EDIT THIS (VERTICAL POSITION): Increase % to move down, decrease % to move up */
       left: 50%;        /* Keeps form horizontally centered */
       transform: translateX(-50%);
-      width: 60%;       /* ← EDIT THIS (WIDTH): Change form width (e.g., 55%, 75%) */
+      width: 65%;       /* ← EDIT THIS (WIDTH): Increased from 60% to 65% */
       pointer-events: all;
     }
 
     .rsvp-field {
-      margin-bottom: 5px; /* Tightened spacing to fit more fields */
+      margin-bottom: 3px; /* Reduced vertical spacing to shrink form height */
     }
 
     .rsvp-label {
@@ -278,13 +278,13 @@
       font-weight: 700;
       color: var(--shadow-brown);
       letter-spacing: 1px;
-      margin-bottom: 1px;
+      margin-bottom: 0px; /* Reduced margin below labels */
       text-transform: uppercase;
     }
 
     .rsvp-input {
       width: 100%;
-      padding: 4px 8px;
+      padding: 3px 8px;   /* Reduced vertical padding to shrink inputs */
       font-family: 'Amatic SC', cursive;
       font-size: clamp(14px, 3.2vw, 18px);
       color: var(--shadow-brown);
@@ -298,7 +298,7 @@
     
     textarea.rsvp-input {
       resize: vertical;
-      min-height: 40px;
+      min-height: 35px;   /* Reduced minimum height of message box */
     }
 
     .rsvp-input:focus {
@@ -342,8 +342,8 @@
     #rsvp-confirm-btn {
       display: block;
       width: 100%;
-      margin-top: 6px;
-      padding: 6px 0;
+      margin-top: 4px;
+      padding: 4px 0;
       font-family: 'Amatic SC', cursive;
       font-size: clamp(14px, 3.5vw, 20px);
       font-weight: 700;
@@ -570,8 +570,8 @@
     setTimeout(() => { fontsReady = true; tryReveal(); }, 800);
   }
 
-  /* --- Fallback: reveal button after 5s no matter what -------- */
-  setTimeout(showEnterButton, 5000);
+  /* --- Fallback removed: The screen will now strictly wait for the large Google Drive image to finish loading to avoid any glitches. --- */
+  // setTimeout(showEnterButton, 5000); 
 
   function showEnterButton () {
     showEnterButton = () => {}; // ensure it only runs once
