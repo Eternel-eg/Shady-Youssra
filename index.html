@@ -157,6 +157,14 @@
     #main-wrapper {
       opacity: 0;
       transition: opacity 1s ease;
+      
+      /* New centering layout */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      min-height: 100dvh; /* Adapts beautifully to mobile browser bars */
+      width: 100%;
     }
     #main-wrapper.visible { opacity: 1; }
 
@@ -165,8 +173,14 @@
     ============================================================ */
     #invitation-container {
       position: relative;
+      
+      /* Dynamic 9:16 sizing that respects screen limits */
+      width: min(100vw, calc(100vh * 9 / 16));
+      width: min(100vw, calc(100dvh * 9 / 16));
+      aspect-ratio: 9 / 16;
       max-width: 540px;
       margin: 0 auto;
+      
       animation: invEnter 1.2s cubic-bezier(.22,.68,0,1.2) both;
       animation-play-state: paused;
     }
@@ -179,7 +193,8 @@
 
     #invitation-image {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
       display: block;
       border-radius: 4px;
     }
@@ -221,16 +236,16 @@
       top: 58.7%;
       left: 50%;
       transform: translateX(-50%);
-      width: 40%;       /* ← Made button smaller width */
+      width: 40%;
       pointer-events: all;
     }
 
     #map-btn {
       display: block;
       width: 100%;
-      padding: 5px 0;   /* ← Made padding smaller */
+      padding: 5px 0;
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(13px, 3vw, 17px); /* ← Made font slightly smaller */
+      font-size: clamp(13px, 3vw, 17px);
       font-weight: 700;
       letter-spacing: 1.5px;
       color: var(--shadow-brown);
@@ -254,7 +269,7 @@
     ============================================================ */
     #rsvp-wrapper {
       position: absolute;
-      top: 65.5%;       /* ← Adjusted slightly higher to fit the new message box */
+      top: 65.5%;
       left: 50%;
       transform: translateX(-50%);
       width: 67%;
@@ -262,7 +277,7 @@
     }
 
     .rsvp-field {
-      margin-bottom: 5px; /* Tightened spacing to fit more fields */
+      margin-bottom: 5px;
     }
 
     .rsvp-label {
@@ -411,10 +426,6 @@
       inset: 0;
       pointer-events: none;
       z-index: 1;
-    }
-
-    @media (max-width: 560px) {
-      #invitation-container { max-width: 100vw; }
     }
 
   </style>
