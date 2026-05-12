@@ -162,13 +162,14 @@
     #main-wrapper.visible { opacity: 1; }
 
     /* ============================================================
-       INVITATION CONTAINER
+       INVITATION CONTAINER (Now a Query Container for perfect scaling)
     ============================================================ */
     #invitation-container {
       position: relative;
       max-width: 540px;
       margin: 0 auto;
-      animation: invEnter 1.2s cubic-bezier(.22,.68,0,1.2) both;
+      container-type: inline-size; /* Enables cqw units for aspect-ratio responsive scaling */
+      animation: invEnter 1.2s cubic-bezier(.90,.68,0,1.2) both;
       animation-play-state: paused;
     }
     #invitation-container.animate { animation-play-state: running; }
@@ -190,10 +191,10 @@
     ============================================================ */
     #gif-overlay {
       position: absolute;
-      top: 42.6%;       /* ← EDIT THIS: Move GIF up or down */
-      left: 50%;        /* ← Keeps GIF perfectly centered left-to-right */
+      top: 42.6%;       
+      left: 50%;        
       transform: translateX(-50%);
-      width: 70%;       /* ← EDIT THIS: Dynamic percentage so it scales perfectly on all phones */
+      width: 70%;       
       pointer-events: none;
       display: flex;
       justify-content: center;
@@ -217,23 +218,24 @@
     }
 
     /* ============================================================
-       📍 GOOGLE MAP BUTTON POSITION CONTROLS
+       📍 GOOGLE MAP BUTTON POSITION CONTROLS (Shrunk by 5%)
     ============================================================ */
     #map-btn-wrapper {
       position: absolute;
-      top: 58.7%;       /* ← EDIT THIS (VERTICAL POSITION): Increase % to move down, decrease % to move up */
+      top: 58.7%;       
       left: 50%;        
       transform: translateX(-50%);
-      width: 40%;       
+      width: 38%; /* Decreased from 40% to 38% */
       pointer-events: all;
     }
 
     #map-btn {
       display: block;
       width: 100%;
-      padding: clamp(3px, 0.7vw, 6px) 0;   
+      /* Scaled using container query units (cqw) for perfect aspect ratio response */
+      padding: clamp(2px, 0.7cqw, 5px) 0;   
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(14px, 3vw, 17px); 
+      font-size: clamp(13px, 3cqw, 16px); /* Decreased slightly */
       font-weight: 700;
       letter-spacing: 1.5px;
       color: var(--shadow-brown);
@@ -253,25 +255,29 @@
     }
 
     /* ============================================================
-       ✉️ RSVP FORM POSITION CONTROLS
+       ✉️ RSVP FORM POSITION CONTROLS (Shrunk Height by 5%)
     ============================================================ */
     #rsvp-wrapper {
       position: absolute;
-      top: 65.5%;         /* ← EDIT THIS (VERTICAL POSITION): Increase % to move down, decrease % to move up */
+      top: 65.5%;         
       left: 50%;        
       transform: translateX(-50%);
       width: 65%;       
       pointer-events: all;
     }
 
-    /* Shrunk height by ~10% using smaller minimums in clamp() */
+    /* --- RSVP HEIGHT CONTROLS --- */
+    /* To adjust the overall height of the RSVP form, tweak the 'margin-bottom', 'padding', and 'min-height' values below. */
+    /* They use 'cqw' (container query width) to scale perfectly with the image. */
+
     .rsvp-field {
-      margin-bottom: clamp(2px, 1vw, 4px); 
+      /* ← EDIT THIS: Controls the vertical gap/space between each form section. */
+      margin-bottom: clamp(10px, 1cqw, 8px); 
     }
 
     .rsvp-label {
       display: block;
-      font-size: clamp(12px, 2.5vw, 15px);
+      font-size: clamp(11px, 2.5cqw, 14px);
       font-weight: 700;
       color: var(--shadow-brown);
       letter-spacing: 1px;
@@ -281,9 +287,10 @@
 
     .rsvp-input {
       width: 100%;
-      padding: clamp(2px, 0.8vw, 4px) clamp(6px, 2vw, 10px);   
+      /* ← EDIT THIS: The first clamp() here controls the inner vertical height of the text inputs */
+      padding: clamp(1px, 0.6cqw, 3px) clamp(4px, 1.5cqw, 8px);   
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(13px, 3vw, 16px);
+      font-size: clamp(16px, 2.8cqw, 15px);
       color: var(--shadow-brown);
       background: var(--overlay-bg);
       border: 1.5px solid var(--orange);
@@ -295,7 +302,8 @@
     
     textarea.rsvp-input {
       resize: vertical;
-      min-height: clamp(25px, 4vw, 32px);   
+      /* ← EDIT THIS: Controls the specific height of the "Message for the couple" box */
+      min-height: clamp(22px, 4.5cqw, 28px);
     }
 
     .rsvp-input:focus {
@@ -307,15 +315,16 @@
     /* Attendance buttons row */
     #attendance-row {
       display: flex;
-      gap: clamp(5px, 1vw, 8px);
+      gap: clamp(4px, 1cqw, 6px);
       margin-top: 1px;
     }
 
     .attend-btn {
       flex: 1;
-      padding: clamp(2px, 0.8vw, 4px);
+      /* ← EDIT THIS: Controls the inner vertical height of the 'Joyfully/Regretfully' buttons */
+      padding: clamp(1px, 0.6cqw, 3px);
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(12px, 2.8vw, 16px);
+      font-size: clamp(11px, 2.6cqw, 14px);
       font-weight: 700;
       letter-spacing: 1px;
       color: var(--shadow-brown);
@@ -339,10 +348,12 @@
     #rsvp-confirm-btn {
       display: block;
       width: 100%;
-      margin-top: clamp(2px, 0.8vw, 4px);
-      padding: clamp(3px, 1vw, 5px) 0;
+      /* ← EDIT THIS: Controls the empty space right above the Confirm button */
+      margin-top: clamp(1px, 0.6cqw, 3px);
+      /* ← EDIT THIS: Controls the inner vertical height of the Confirm button itself */
+      padding: clamp(2px, 0.8cqw, 4px) 0;
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(15px, 3.2vw, 18px);
+      font-size: clamp(14px, 3cqw, 17px);
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -377,8 +388,8 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      font-size: clamp(18px, 4.5vw, 24px);
-      padding: clamp(10px, 2vw, 15px);
+      font-size: clamp(18px, 4.5cqw, 24px);
+      padding: clamp(10px, 2cqw, 15px);
       font-weight: 700;
       color: var(--shadow-brown);
       background: transparent;
@@ -389,13 +400,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: clamp(40px, 8vw, 50px);
-      height: clamp(40px, 8vw, 50px);
+      width: clamp(40px, 8cqw, 50px);
+      height: clamp(40px, 8cqw, 50px);
       border: 2px solid var(--terracotta);
       border-radius: 50%;
       margin-bottom: 8px;
       color: var(--terracotta);
-      font-size: clamp(20px, 5vw, 28px);
+      font-size: clamp(20px, 5cqw, 28px);
       animation: popCheck 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
     
@@ -570,7 +581,7 @@
 </div>
 
 
-<>
+<script>
 /* ============================================================
    ASSET PRELOADING & ENTRY LOGIC
 ============================================================ */
@@ -773,25 +784,6 @@ function fadeVolume (audioEl, from, to, duration) {
 /* ============================================================
    RSVP INTERACTIONS & GOOGLE SHEETS SETUP
 ============================================================ */
-
-/* --- GOOGLE SHEETS SETUP INSTRUCTIONS ---
-  1. Open a new Google Sheet.
-  2. Go to "Extensions" > "Apps Script".
-  3. Delete any code there and paste this exact script:
-
-      function doPost(e) {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-        var data = JSON.parse(e.postData.contents);
-        sheet.appendRow([new Date(), data.name, data.attendance, data.guests, data.message]);
-        return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
-      }
-
-  4. Click "Deploy" > "New Deployment" at the top right.
-  5. Select type: "Web app".
-  6. Execute as: "Me", Who has access: "Anyone".
-  7. Click "Deploy" and Authorize access.
-  8. Copy the provided "Web app URL" and paste it between the quotes below:
-*/
 
 const GOOGLE_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyGKC1Cf_XWDIY1oAMVK-y4JvOT7rEUyDO9H4EvM6ZhjpJQjg3HMMRgg-FHdxlecHVF/exec'; // <--- PASTE YOUR LINK HERE
 
