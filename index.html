@@ -186,20 +186,22 @@
     }
 
     /* ============================================================
-       GIF OVERLAY
+       GIF OVERLAY POSITION CONTROLS
     ============================================================ */
     #gif-overlay {
       position: absolute;
-      top: 42.6%;
-      left: 15%;
-      width: 500px;
+      top: 42.6%;       /* ← EDIT THIS: Move GIF up or down (e.g. 45% or 200px) */
+      left: 50%;        /* ← Keeps GIF perfectly centered left-to-right */
+      transform: translateX(-50%);
+      width: 400px;     /* ← EDIT THIS: Change the size of the GIF */
       pointer-events: none;
-      height: auto;
+      display: flex;
+      justify-content: center;
     }
 
     #gif-overlay img {
-      width: 80%;
-      height: 80%;
+      width: 100%;
+      height: auto;
       display: block;
       opacity: 1;
       mix-blend-mode: normal;
@@ -215,23 +217,25 @@
     }
 
     /* ============================================================
-       GOOGLE MAP BUTTON
+       📍 GOOGLE MAP BUTTON POSITION CONTROLS
+       Change the "top" percentage below to move the button up or down.
+       Change the "width" percentage below to make it wider/narrower.
     ============================================================ */
     #map-btn-wrapper {
       position: absolute;
-      top: 57.5%;
-      left: 50%;
+      top: 58.7%;       /* ← EDIT THIS (VERTICAL POSITION): Increase % to move down, decrease % to move up */
+      left: 50%;        /* Keeps button horizontally centered */
       transform: translateX(-50%);
-      width: 40%;       /* ← Made button smaller width */
+      width: 40%;       /* ← EDIT THIS (WIDTH): Change button width (e.g., 30%, 50%) */
       pointer-events: all;
     }
 
     #map-btn {
       display: block;
       width: 100%;
-      padding: 5px 0;   /* ← Made padding smaller */
+      padding: 5px 0;   
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(13px, 3vw, 17px); /* ← Made font slightly smaller */
+      font-size: clamp(13px, 3vw, 17px); 
       font-weight: 700;
       letter-spacing: 1.5px;
       color: var(--shadow-brown);
@@ -251,14 +255,16 @@
     }
 
     /* ============================================================
-       RSVP SECTION
+       ✉️ RSVP FORM POSITION CONTROLS
+       Change the "top" percentage below to move the whole form up or down.
+       Change the "width" percentage below to make it wider/narrower.
     ============================================================ */
     #rsvp-wrapper {
       position: absolute;
-      top: 63%;       /* ← Adjusted slightly higher to fit the new message box */
-      left: 50%;
+      top: 65.5%;         /* ← EDIT THIS (VERTICAL POSITION): Increase % to move down, decrease % to move up */
+      left: 50%;        /* Keeps form horizontally centered */
       transform: translateX(-50%);
-      width: 65%;
+      width: 65%;       /* ← EDIT THIS (WIDTH): Change form width (e.g., 55%, 75%) */
       pointer-events: all;
     }
 
