@@ -82,7 +82,7 @@
     }
 
     #loading-logo {
-      width: min(260px, 65vw);
+      width: min(260px, 65vw);   /* ← LOGO SIZE – change the first value (px) to resize */
       animation: breathe 3s ease-in-out infinite;
       filter: drop-shadow(0 0 18px var(--glow));
       position: relative;
@@ -128,30 +128,6 @@
       50%      { transform: translateY(-10px) scale(1.15); opacity: 1;   }
     }
 
-    /* Enter Button (Start the celebration) */
-    #enter-btn {
-      padding: 12px 28px;
-      font-family: 'Amatic SC', cursive;
-      font-size: clamp(20px, 5vw, 28px);
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--floral);
-      background: linear-gradient(135deg, var(--orange), var(--terracotta));
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(217,122,74,0.40);
-      transition: transform 0.2s, box-shadow 0.3s, filter 0.3s;
-      position: relative;
-      z-index: 2;
-    }
-    
-    #enter-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 22px rgba(217,122,74,0.55);
-      filter: brightness(1.08);
-    }
-
     /* ============================================================
        MAIN WRAPPER
     ============================================================ */
@@ -162,14 +138,15 @@
     #main-wrapper.visible { opacity: 1; }
 
     /* ============================================================
-       INVITATION CONTAINER (Now a Query Container for perfect scaling)
+       INVITATION CONTAINER
+       Centered, max-width column, responsive
     ============================================================ */
     #invitation-container {
       position: relative;
       max-width: 540px;
       margin: 0 auto;
-      container-type: inline-size; /* Enables cqw units for aspect-ratio responsive scaling */
-      animation: invEnter 1.2s cubic-bezier(.90,.68,0,1.2) both;
+      /* Cinematic entrance */
+      animation: invEnter 1.2s cubic-bezier(.22,.68,0,1.2) both;
       animation-play-state: paused;
     }
     #invitation-container.animate { animation-play-state: running; }
@@ -179,6 +156,7 @@
       to   { opacity: 1; transform: translateY(0)   scale(1);    }
     }
 
+    /* The primary invitation image – never replaced, never altered */
     #invitation-image {
       width: 100%;
       height: auto;
@@ -187,55 +165,89 @@
     }
 
     /* ============================================================
-       GIF OVERLAY POSITION CONTROLS
+       GIF OVERLAY
+    ============================================================ */
+
+    /* ============================================================
+       GIF OVERLAY POSITION CONTROLS START
+       ↓↓↓  THIS IS WHERE YOU POSITION THE GIF  ↓↓↓
+       Edit ONLY the values marked with  ← EDIT THIS
     ============================================================ */
     #gif-overlay {
       position: absolute;
-      top: 42.6%;       
-      left: 50%;        
-      transform: translateX(-50%);
-      width: 70%;       
+
+      /* ─── VERTICAL POSITION ──────────────────────────────────
+         Distance from the TOP of the invitation image.
+         Use % (relative to invitation height) or px.
+         Example:  top: 5%   or   top: 60px                     */
+      top: 42.6%;              /* ← EDIT THIS – move GIF up/down   */
+
+      /* ─── HORIZONTAL POSITION ───────────────────────────────
+         Distance from the LEFT edge of the invitation image.
+         Use % (relative to invitation width) or px.
+         Example:  left: 10%   or   left: 30px                  */
+      left: 15%;             /* ← EDIT THIS – move GIF left/right */
+
+      /* ─── SIZE ───────────────────────────────────────────────
+         "auto" = GIF displays at its original pixel size (default).
+         Change to px or % only if you want to scale it.
+         Example:  width: 200px   or   width: 40%               */
+      width: 500px;          /* ← EDIT THIS – "auto" keeps original size */
+
+      /* Fixed internals – do not change these */
       pointer-events: none;
-      display: flex;
-      justify-content: center;
+      height: auto;
     }
 
     #gif-overlay img {
-      width: 100%;
-      height: auto;
+      width: 80%;
+      height: 80%;
       display: block;
-      opacity: 1;
-      mix-blend-mode: normal;
+
+      /* ─── OPACITY ────────────────────────────────────────────
+         0 = invisible, 1 = fully visible                        */
+      opacity: 1;           /* ← EDIT THIS – adjust transparency */
+
+      /* ─── BLEND MODE ─────────────────────────────────────────
+         Options: normal | screen | multiply | overlay | soft-light
+         Use "normal" to show the gif exactly as-is (transparent bg)
+         Use "screen"  to let light areas shine through           */
+      mix-blend-mode: normal; /* ← EDIT THIS – change blend mode  */
     }
+    /* GIF OVERLAY POSITION CONTROLS END
+    ============================================================ */
 
     /* ============================================================
-       INTERACTIVE OVERLAY
+       INTERACTIVE OVERLAY (transparent layer above image)
     ============================================================ */
     #interactive-overlay {
       position: absolute;
       inset: 0;
-      pointer-events: none; 
+      pointer-events: none; /* children opt-in individually */
     }
 
     /* ============================================================
-       📍 GOOGLE MAP BUTTON POSITION CONTROLS (Shrunk by 5%)
+       GOOGLE MAP BUTTON
     ============================================================ */
+
+    /* MAP BUTTON POSITION START */
+    /* Adjust top / left / width / height here */
     #map-btn-wrapper {
       position: absolute;
-      top: 58.7%;       
-      left: 50%;        
+      top: 58.5%;       /* ← vertical % of invitation height  */
+      left: 50%;
       transform: translateX(-50%);
-      width: 38%; /* Decreased from 40% to 38% */
+      width: 55%;       /* ← button width                     */
       pointer-events: all;
     }
+    /* MAP BUTTON POSITION END */
 
     #map-btn {
       display: block;
       width: 100%;
-      /* Scaled using container query units (cqw) for perfect aspect ratio response */
-      padding: clamp(2px, 0.7cqw, 5px) 0;   
+      padding: 7px 0;
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(13px, 3cqw, 16px); /* Decreased slightly */
+      font-size: clamp(15px, 3.5vw, 20px);
       font-weight: 700;
       letter-spacing: 1.5px;
       color: var(--shadow-brown);
@@ -255,42 +267,42 @@
     }
 
     /* ============================================================
-       ✉️ RSVP FORM POSITION CONTROLS (Shrunk Height by 5%)
+       RSVP SECTION
     ============================================================ */
+
+    /* RSVP POSITION START */
+    /* Adjust top / left / width / padding here */
     #rsvp-wrapper {
       position: absolute;
-      top: 65.5%;         
-      left: 50%;        
+      top: 66.5%;       /* ← vertical % of invitation height */
+      left: 50%;
       transform: translateX(-50%);
-      width: 65%;       
+      width: 65%;       /* ← section width – decrease/increase % here */
       pointer-events: all;
     }
+    /* RSVP POSITION END */
 
-    /* --- RSVP HEIGHT CONTROLS --- */
-    /* To adjust the overall height of the RSVP form, tweak the 'margin-bottom', 'padding', and 'min-height' values below. */
-    /* They use 'cqw' (container query width) to scale perfectly with the image. */
-
+    /* ── RSVP field spacing: −8% height via tighter margins/padding ── */
     .rsvp-field {
-      /* ← EDIT THIS: Controls the vertical gap/space between each form section. */
-      margin-bottom: clamp(10px, 1cqw, 8px); 
+      margin-bottom: clamp(3px, 0.8vmin, 5px);   /* was 6px */
     }
 
     .rsvp-label {
       display: block;
-      font-size: clamp(11px, 2.5cqw, 14px);
+      /* font slightly larger (+1–2px) and vmin-aware for aspect ratio */
+      font-size: clamp(13px, 3vmin, 17px);        /* was clamp(12px,2.8vw,16px) */
       font-weight: 700;
       color: var(--shadow-brown);
       letter-spacing: 1px;
-      margin-bottom: 0px; 
+      margin-bottom: clamp(1px, 0.4vmin, 2px);   /* was 2px */
       text-transform: uppercase;
     }
 
     .rsvp-input {
       width: 100%;
-      /* ← EDIT THIS: The first clamp() here controls the inner vertical height of the text inputs */
-      padding: clamp(1px, 0.6cqw, 3px) clamp(4px, 1.5cqw, 8px);   
+      padding: clamp(3px, 0.8vmin, 4px) clamp(6px, 1.5vmin, 9px); /* was 5px 10px */
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(16px, 2.8cqw, 15px);
+      font-size: clamp(15px, 3.5vmin, 19px);      /* was clamp(14px,3.2vw,18px) */
       color: var(--shadow-brown);
       background: var(--overlay-bg);
       border: 1.5px solid var(--orange);
@@ -298,12 +310,6 @@
       outline: none;
       transition: box-shadow 0.3s, border-color 0.3s, background 0.3s;
       backdrop-filter: blur(3px);
-    }
-    
-    textarea.rsvp-input {
-      resize: vertical;
-      /* ← EDIT THIS: Controls the specific height of the "Message for the couple" box */
-      min-height: clamp(22px, 4.5cqw, 28px);
     }
 
     .rsvp-input:focus {
@@ -315,16 +321,15 @@
     /* Attendance buttons row */
     #attendance-row {
       display: flex;
-      gap: clamp(4px, 1cqw, 6px);
-      margin-top: 1px;
+      gap: clamp(4px, 1vmin, 6px);               /* was 6px */
+      margin-top: clamp(1px, 0.3vmin, 2px);      /* was 2px */
     }
 
     .attend-btn {
       flex: 1;
-      /* ← EDIT THIS: Controls the inner vertical height of the 'Joyfully/Regretfully' buttons */
-      padding: clamp(1px, 0.6cqw, 3px);
+      padding: clamp(3px, 0.8vmin, 4px) clamp(2px, 0.5vmin, 4px); /* was 5px 4px */
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(11px, 2.6cqw, 14px);
+      font-size: clamp(14px, 3vmin, 18px);        /* was clamp(13px,2.8vw,17px) */
       font-weight: 700;
       letter-spacing: 1px;
       color: var(--shadow-brown);
@@ -348,12 +353,10 @@
     #rsvp-confirm-btn {
       display: block;
       width: 100%;
-      /* ← EDIT THIS: Controls the empty space right above the Confirm button */
-      margin-top: clamp(1px, 0.6cqw, 3px);
-      /* ← EDIT THIS: Controls the inner vertical height of the Confirm button itself */
-      padding: clamp(2px, 0.8cqw, 4px) 0;
+      margin-top: clamp(3px, 0.9vmin, 5px);      /* was 6px */
+      padding: clamp(4px, 1vmin, 5px) 0;          /* was 6px 0 */
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(14px, 3cqw, 17px);
+      font-size: clamp(15px, 3.8vmin, 21px);      /* was clamp(14px,3.5vw,20px) */
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -371,52 +374,56 @@
       box-shadow: 0 6px 22px rgba(217,122,74,0.55);
       filter: brightness(1.08);
     }
-    
-    /* Disabled state for button when sending */
-    #rsvp-confirm-btn:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none;
-    }
 
-    /* Transparent Minimal Success message container */
+    /* Success message */
     #rsvp-success {
       display: none;
-      position: absolute;
-      inset: 0;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       text-align: center;
-      font-size: clamp(18px, 4.5cqw, 24px);
-      padding: clamp(10px, 2cqw, 15px);
+      font-size: clamp(17px, 4.2vmin, 23px);      /* was clamp(16px,4vw,22px) */
       font-weight: 700;
       color: var(--shadow-brown);
-      background: transparent;
+      background: rgba(255,247,238,0.6);
+      border-radius: 10px;
+      padding: clamp(6px, 1.5vmin, 9px);          /* was 10px */
+      margin-top: clamp(3px, 0.8vmin, 5px);       /* was 6px */
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--gold);
     }
-    
-    /* Animated Minimal Circular Checkmark */
-    .success-checkmark-circle {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: clamp(40px, 8cqw, 50px);
-      height: clamp(40px, 8cqw, 50px);
-      border: 2px solid var(--terracotta);
-      border-radius: 50%;
-      margin-bottom: 8px;
-      color: var(--terracotta);
-      font-size: clamp(20px, 5cqw, 28px);
-      animation: popCheck 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+
+    /* ── Aspect-ratio breakpoints for very small / narrow phones ── */
+
+    /* Tall & narrow phones (e.g. iPhone SE, Galaxy A series) */
+    @media (max-width: 400px) {
+      #rsvp-wrapper { width: 70%; }
+      .rsvp-label   { font-size: clamp(12px, 3.5vw, 15px); }
+      .rsvp-input   { font-size: clamp(13px, 3.8vw, 16px); padding: 3px 7px; }
+      .attend-btn   { font-size: clamp(12px, 3.2vw, 15px); padding: 3px 2px; }
+      #rsvp-confirm-btn { font-size: clamp(13px, 4vw, 17px); padding: 4px 0; }
+      #rsvp-success     { font-size: clamp(14px, 4vw, 17px); padding: 5px; }
     }
-    
-    @keyframes popCheck {
-      0% { transform: scale(0); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
+
+    /* Very short viewport height (landscape or compact phones < 680px tall) */
+    @media (max-height: 680px) {
+      .rsvp-field        { margin-bottom: 2px; }
+      .rsvp-label        { font-size: clamp(11px, 2.5vh, 14px); margin-bottom: 1px; }
+      .rsvp-input        { padding: 2px 7px; font-size: clamp(12px, 2.8vh, 15px); }
+      #attendance-row    { gap: 4px; margin-top: 1px; }
+      .attend-btn        { padding: 2px 3px; font-size: clamp(11px, 2.5vh, 14px); }
+      #rsvp-confirm-btn  { padding: 3px 0; margin-top: 3px; font-size: clamp(12px, 3vh, 16px); }
+      #rsvp-success      { padding: 4px; margin-top: 3px; font-size: clamp(12px, 3vh, 15px); }
+    }
+
+    /* Ultra-small screens (e.g. 320px wide, iPhone 5) */
+    @media (max-width: 340px) {
+      #rsvp-wrapper { width: 72%; }
+      .rsvp-label   { font-size: 11px; letter-spacing: 0.5px; }
+      .rsvp-input   { font-size: 12px; padding: 2px 5px; }
+      .attend-btn   { font-size: 11px; padding: 2px; letter-spacing: 0.5px; }
+      #rsvp-confirm-btn { font-size: 12px; padding: 3px 0; letter-spacing: 1px; }
     }
 
     /* ============================================================
-       MUSIC BUTTON
+       MUSIC BUTTON (fixed bottom-right)
     ============================================================ */
     #music-btn {
       position: fixed;
@@ -447,7 +454,7 @@
     #music-btn .music-icon { font-size: 1.2em; }
 
     /* ============================================================
-       FLOATING PARTICLES CANVAS
+       FLOATING PARTICLES CANVAS (background)
     ============================================================ */
     #particles-canvas {
       position: fixed;
@@ -456,6 +463,9 @@
       z-index: 1;
     }
 
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
     @media (max-width: 560px) {
       #invitation-container { max-width: 100vw; }
     }
@@ -470,10 +480,12 @@
 <div id="loading-screen" role="status" aria-label="Loading wedding invitation">
   <canvas id="loading-canvas"></canvas>
 
+  <!-- Logo (upload logo1.png in same folder) -->
   <img id="loading-logo" src="logo1.png" alt="Shady & Youssra Logo" />
 
   <div id="loading-text">Loading our special day&nbsp;✦</div>
 
+  <!-- Pet emoji animation instead of dots -->
   <div id="loading-pets" aria-hidden="true">
     <span>🦮</span>
     <span>🐈</span>
@@ -482,10 +494,6 @@
     <span>🦮</span>
     <span>🐈</span>
   </div>
-
-  <!-- Entry Button (Initially Hidden) -->
-  <button id="enter-btn" style="display: none;" aria-label="Enter the invitation">Start the celebration 🥂</button>
-
 </div>
 
 <!-- ============================================================
@@ -493,28 +501,47 @@
 ============================================================ -->
 <div id="main-wrapper">
 
+  <!-- Background floating particles -->
   <canvas id="particles-canvas" aria-hidden="true"></canvas>
 
+  <!-- Hidden audio element – music1.mp3 must be in same folder -->
   <audio id="bg-music" src="music1.mp3" loop preload="auto"></audio>
 
+  <!-- Music toggle button (fixed) -->
   <button id="music-btn" aria-label="Toggle background music">
     <span class="music-icon">♪</span>
     <span id="music-label">Tap for music</span>
   </button>
 
+  <!-- ====================================================
+       INVITATION CONTAINER
+  ==================================================== -->
   <div id="invitation-container">
 
+    <!-- PRIMARY INVITATION IMAGE (never altered, never removed) -->
     <img id="invitation-image"
-         src="https://drive.google.com/thumbnail?id=1wKADt5pimSAJcfj0WOU7UZzgaBwmNfmn&sz=w2000"
+         src="image1.png"
          alt="Shady & Youssra Wedding Invitation"
          draggable="false" />
 
+    <!-- ==================================================
+         GIF OVERLAY POSITION CONTROLS START
+         Adjust top / left / width / opacity / blend-mode
+         in the CSS above (#gif-overlay)
+    ================================================== -->
     <div id="gif-overlay" aria-hidden="true">
+      <!-- Replace gif1.gif positioning in CSS above -->
       <img src="gif1.gif" alt="" />
     </div>
+    <!-- GIF OVERLAY POSITION CONTROLS END -->
 
+    <!-- ==================================================
+         TRANSPARENT INTERACTIVE OVERLAY
+    ================================================== -->
     <div id="interactive-overlay" aria-hidden="false">
 
+      <!-- MAP BUTTON POSITION START -->
+      <!-- Adjust top / left / width inside #map-btn-wrapper in CSS -->
       <div id="map-btn-wrapper">
         <a id="map-btn"
            href="https://www.google.com/maps/search/La+Cabana+Blue+Blue"
@@ -524,76 +551,73 @@
           📍 Open in Google Maps
         </a>
       </div>
+      <!-- MAP BUTTON POSITION END -->
 
+      <!-- RSVP POSITION START -->
+      <!-- Adjust top / left / width inside #rsvp-wrapper in CSS -->
       <div id="rsvp-wrapper" role="form" aria-label="RSVP Form">
-        
-        <!-- WRAPPER to hide inputs on submit -->
-        <div id="rsvp-form-fields">
-          <div class="rsvp-field">
-            <label class="rsvp-label" for="rsvp-name">Your Name</label>
-            <input class="rsvp-input"
-                   id="rsvp-name"
-                   type="text"
-                   placeholder="Enter your name…"
-                   autocomplete="name" />
-          </div>
 
-          <div class="rsvp-field">
-            <span class="rsvp-label">Will you join us?</span>
-            <div id="attendance-row">
-              <button class="attend-btn" data-value="joyfully"   id="btn-joyfully">Joyfully</button>
-              <button class="attend-btn" data-value="regretfully" id="btn-regretfully">Regretfully</button>
-            </div>
-          </div>
-
-          <div class="rsvp-field">
-            <label class="rsvp-label" for="rsvp-guests">Guests</label>
-            <input class="rsvp-input"
-                   id="rsvp-guests"
-                   type="number"
-                   min="1" max="10"
-                   placeholder="Number of guests…" />
-          </div>
-
-          <div class="rsvp-field">
-            <label class="rsvp-label" for="rsvp-message">Message for the couple</label>
-            <textarea class="rsvp-input"
-                      id="rsvp-message"
-                      rows="2"
-                      placeholder="Leave a wish..."></textarea>
-          </div>
-
-          <button id="rsvp-confirm-btn" type="button">✦ Confirm ✦</button>
+        <!-- Name field -->
+        <div class="rsvp-field">
+          <label class="rsvp-label" for="rsvp-name">Your Name</label>
+          <input class="rsvp-input"
+                 id="rsvp-name"
+                 type="text"
+                 placeholder="Enter your name…"
+                 autocomplete="name" />
         </div>
 
-        <!-- NEW Success message with transparent animated checkmark circle -->
+        <!-- Attendance -->
+        <div class="rsvp-field">
+          <span class="rsvp-label">Will you join us?</span>
+          <div id="attendance-row">
+            <button class="attend-btn" data-value="joyfully"   id="btn-joyfully">Joyfully</button>
+            <button class="attend-btn" data-value="regretfully" id="btn-regretfully">Regretfully</button>
+          </div>
+        </div>
+
+        <!-- Guest count -->
+        <div class="rsvp-field">
+          <label class="rsvp-label" for="rsvp-guests">Guests</label>
+          <input class="rsvp-input"
+                 id="rsvp-guests"
+                 type="number"
+                 min="1" max="10"
+                 placeholder="Number of guests…" />
+        </div>
+
+        <!-- Confirm button -->
+        <button id="rsvp-confirm-btn" type="button">✦ Confirm ✦</button>
+
+        <!-- Success message -->
         <div id="rsvp-success" role="alert" aria-live="polite">
-          <div class="success-checkmark-circle">✓</div>
-          <div>We can't wait to celebrate with you!</div>
+          🎊 We can't wait to celebrate with you! 🎊
         </div>
 
       </div>
+      <!-- RSVP POSITION END -->
 
-    </div>
+    </div><!-- /interactive-overlay -->
 
-  </div>
+  </div><!-- /invitation-container -->
 
-</div>
+</div><!-- /main-wrapper -->
 
 
 <script>
 /* ============================================================
-   ASSET PRELOADING & ENTRY LOGIC
+   ASSET PRELOADING
+   Wait for image1.png, gif1.gif, and fonts before hiding loader
 ============================================================ */
 (function () {
 
-  const ASSETS = ['https://drive.google.com/thumbnail?id=1wKADt5pimSAJcfj0WOU7UZzgaBwmNfmn&sz=w2000', 'gif1.gif', 'logo1.png'];
+  const ASSETS = ['image1.png', 'gif1.gif', 'logo1.png'];
   let loaded = 0;
   let fontsReady = false;
   let assetsReady = false;
 
   function tryReveal () {
-    if (fontsReady && assetsReady) showEnterButton();
+    if (fontsReady && assetsReady) revealInvitation();
   }
 
   /* --- Preload images ---------------------------------------- */
@@ -610,28 +634,11 @@
     setTimeout(() => { fontsReady = true; tryReveal(); }, 800);
   }
 
-  function showEnterButton () {
-    showEnterButton = () => {}; // ensure it only runs once
-    
-    document.getElementById('loading-pets').style.display = 'none';
-    document.getElementById('loading-text').innerHTML = 'Ready to celebrate?&nbsp;✦';
-    
-    const enterBtn = document.getElementById('enter-btn');
-    enterBtn.style.display = 'block';
-    enterBtn.style.opacity = '0';
-    requestAnimationFrame(() => {
-      enterBtn.style.transition = 'opacity 0.8s ease';
-      enterBtn.style.opacity = '1';
-    });
-  }
-
-  /* Handle Enter Button Click */
-  document.getElementById('enter-btn').addEventListener('click', () => {
-    revealInvitation();
-    initMusic(true); // Automatically start music because user interacted
-  });
+  /* --- Fallback: reveal after 5 s no matter what -------------- */
+  setTimeout(revealInvitation, 5000);
 
   function revealInvitation () {
+    revealInvitation = () => {}; // run once
     const loader  = document.getElementById('loading-screen');
     const wrapper = document.getElementById('main-wrapper');
     const container = document.getElementById('invitation-container');
@@ -641,6 +648,7 @@
     setTimeout(() => container.classList.add('animate'), 100);
 
     initParticles();
+    initMusic();
   }
 
 })();
@@ -707,7 +715,7 @@ function initParticles () {
       y:     Math.random() * window.innerHeight,
       r:     Math.random() * 3 + 1,
       dx:    (Math.random() - 0.5) * 0.35,
-      dy:    -(Math.random() * 0.5 + 0.2), 
+      dy:    -(Math.random() * 0.5 + 0.2), // drift upward gently
       alpha: Math.random() * 0.35 + 0.08,
       pulse: Math.random() * Math.PI * 2,
     });
@@ -734,7 +742,7 @@ function initParticles () {
 /* ============================================================
    MUSIC PLAYER
 ============================================================ */
-function initMusic (startPlaying = false) {
+function initMusic () {
   const audio  = document.getElementById('bg-music');
   const btn    = document.getElementById('music-btn');
   const label  = document.getElementById('music-label');
@@ -742,14 +750,19 @@ function initMusic (startPlaying = false) {
 
   audio.volume = 0;
 
-  if (startPlaying) {
-    audio.play().then(() => {
-      playing = true;
-      fadeVolume(audio, 0, 0.45, 2500); 
-      label.textContent = '♫ Playing';
-    }).catch(() => {
-      label.textContent = 'Tap for music';
-    });
+  /* Attempt autoplay */
+  const autoplayPromise = audio.play();
+  if (autoplayPromise !== undefined) {
+    autoplayPromise
+      .then(() => {
+        playing = true;
+        fadeVolume(audio, 0, 0.45, 3000); // fade in over 3 s
+        label.textContent = '♫ Playing';
+      })
+      .catch(() => {
+        /* Autoplay blocked – show tap-to-enable CTA */
+        label.textContent = 'Tap for music';
+      });
   }
 
   btn.addEventListener('click', () => {
@@ -769,6 +782,7 @@ function initMusic (startPlaying = false) {
   });
 }
 
+/* Smooth volume fade helper */
 function fadeVolume (audioEl, from, to, duration) {
   const steps = 60;
   const stepTime = duration / steps;
@@ -782,11 +796,8 @@ function fadeVolume (audioEl, from, to, duration) {
 }
 
 /* ============================================================
-   RSVP INTERACTIONS & GOOGLE SHEETS SETUP
+   RSVP INTERACTIONS
 ============================================================ */
-
-const GOOGLE_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyGKC1Cf_XWDIY1oAMVK-y4JvOT7rEUyDO9H4EvM6ZhjpJQjg3HMMRgg-FHdxlecHVF/exec'; // <--- PASTE YOUR LINK HERE
-
 (function () {
   let selectedAttendance = '';
 
@@ -794,7 +805,6 @@ const GOOGLE_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyGKC
   const regBtn  = document.getElementById('btn-regretfully');
   const confirm = document.getElementById('rsvp-confirm-btn');
   const success = document.getElementById('rsvp-success');
-  const formFields = document.getElementById('rsvp-form-fields');
 
   function selectAttend (val) {
     selectedAttendance = val;
@@ -806,11 +816,9 @@ const GOOGLE_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyGKC
   regBtn.addEventListener('click', () => selectAttend('regretfully'));
 
   confirm.addEventListener('click', () => {
-    const name    = document.getElementById('rsvp-name').value.trim();
-    const guests  = document.getElementById('rsvp-guests').value;
-    const message = document.getElementById('rsvp-message').value.trim();
+    const name   = document.getElementById('rsvp-name').value.trim();
+    const guests = document.getElementById('rsvp-guests').value;
 
-    // Validation
     if (!name) {
       document.getElementById('rsvp-name').focus();
       document.getElementById('rsvp-name').style.borderColor = 'var(--border-red)';
@@ -823,43 +831,39 @@ const GOOGLE_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyGKC
       return;
     }
 
-    const rsvpData = { name, attendance: selectedAttendance, guests, message };
-    
-    // UI Loading state
-    confirm.textContent = 'Sending...';
-    confirm.disabled = true;
+    /* --- BACKEND INTEGRATION COMMENT ---
+       Replace this block with your preferred backend:
 
-    // Send to Google Sheets
-    fetch(GOOGLE_SCRIPT_WEB_APP_URL, {
-      method: 'POST',
-      mode: 'no-cors', // Essential for simple google sheets fetch to work without preflight errors
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(rsvpData)
-    }).then(() => {
-      // Hide all input fields smoothly but keep layout space to center success message
-      formFields.style.visibility = 'hidden';
-      formFields.style.opacity = '0';
-      
-      // Show checkmark success
-      success.style.display  = 'flex';
-      success.style.animation = 'none';
-      success.style.opacity   = '0';
-      requestAnimationFrame(() => {
-        success.style.transition = 'opacity 0.6s ease';
-        success.style.opacity    = '1';
-      });
-    }).catch(error => {
-      console.error('Error submitting RSVP:', error);
-      // Fallback: Show success anyway so user experience is uninterrupted, 
-      // even if there's a strict browser ad-blocker blocking the fetch
-      formFields.style.visibility = 'hidden';
-      formFields.style.opacity = '0';
-      success.style.display  = 'flex';
-      success.style.opacity  = '1';
+       OPTION A – Google Apps Script webhook:
+         fetch('YOUR_APPS_SCRIPT_URL', {
+           method: 'POST',
+           body: JSON.stringify({ name, attendance: selectedAttendance, guests })
+         });
+
+       OPTION B – Firebase Realtime Database:
+         import { getDatabase, ref, push } from "firebase/database";
+         push(ref(db, 'rsvps'), { name, attendance: selectedAttendance, guests });
+
+       OPTION C – Generic webhook (Make, Zapier, n8n, etc.):
+         fetch('YOUR_WEBHOOK_URL', { method:'POST', headers:{'Content-Type':'application/json'},
+           body: JSON.stringify({ name, attendance: selectedAttendance, guests, timestamp: new Date() })
+         });
+
+       OPTION D – Google Sheets via Apps Script:
+         Same as Option A; log to sheet in the script.
+    --------------------------------------------------- */
+
+    console.log('RSVP submitted:', { name, attendance: selectedAttendance, guests });
+
+    /* Show success */
+    confirm.style.display = 'none';
+    success.style.display  = 'block';
+    success.style.animation = 'none';
+    success.style.opacity   = '0';
+    requestAnimationFrame(() => {
+      success.style.transition = 'opacity 0.6s ease';
+      success.style.opacity    = '1';
     });
-
   });
 
 })();
