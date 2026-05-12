@@ -190,7 +190,7 @@
     ============================================================ */
     #gif-overlay {
       position: absolute;
-      top: 42.6%;       /* ← EDIT THIS: Move GIF up or down (e.g. 45% or 200px) */
+      top: 42.6%;       /* ← EDIT THIS: Move GIF up or down */
       left: 50%;        /* ← Keeps GIF perfectly centered left-to-right */
       transform: translateX(-50%);
       width: 70%;       /* ← EDIT THIS: Dynamic percentage so it scales perfectly on all phones */
@@ -218,24 +218,23 @@
 
     /* ============================================================
        📍 GOOGLE MAP BUTTON POSITION CONTROLS
-       Change the "top" percentage below to move the button up or down.
-       Change the "width" percentage below to make it wider/narrower.
     ============================================================ */
     #map-btn-wrapper {
       position: absolute;
       top: 58.7%;       /* ← EDIT THIS (VERTICAL POSITION): Increase % to move down, decrease % to move up */
-      left: 50%;        /* Keeps button horizontally centered */
+      left: 50%;        
       transform: translateX(-50%);
-      width: 40%;       /* ← EDIT THIS (WIDTH): Change button width (e.g., 30%, 50%) */
+      width: 40%;       
       pointer-events: all;
     }
 
     #map-btn {
       display: block;
       width: 100%;
-      padding: 5px 0;   
+      /* Fully fluid padding and font-size to prevent layout shift on small phones */
+      padding: min(0.9vw, 5px) 0;   
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(13px, 3vw, 17px); 
+      font-size: min(3.15vw, 17px); 
       font-weight: 700;
       letter-spacing: 1.5px;
       color: var(--shadow-brown);
@@ -256,41 +255,42 @@
 
     /* ============================================================
        ✉️ RSVP FORM POSITION CONTROLS
-       Change the "top" percentage below to move the whole form up or down.
-       Change the "width" percentage below to make it wider/narrower.
     ============================================================ */
     #rsvp-wrapper {
       position: absolute;
       top: 65.5%;         /* ← EDIT THIS (VERTICAL POSITION): Increase % to move down, decrease % to move up */
-      left: 50%;        /* Keeps form horizontally centered */
+      left: 50%;        
       transform: translateX(-50%);
-      width: 65%;       /* ← EDIT THIS (WIDTH): Increased from 60% to 65% */
+      width: 65%;       
       pointer-events: all;
     }
 
     .rsvp-field {
-      margin-bottom: 3px; /* Reduced vertical spacing to shrink form height */
+      /* Fluid spacing */
+      margin-bottom: min(0.55vw, 3px); 
     }
 
     .rsvp-label {
       display: block;
-      font-size: clamp(12px, 2.8vw, 16px);
+      /* Fluid font size */
+      font-size: min(2.96vw, 16px);
       font-weight: 700;
       color: var(--shadow-brown);
       letter-spacing: 1px;
-      margin-bottom: 0px; /* Reduced margin below labels */
+      margin-bottom: 0px; 
       text-transform: uppercase;
     }
 
     .rsvp-input {
       width: 100%;
-      padding: 3px 8px;   /* Reduced vertical padding to shrink inputs */
+      /* Fluid padding and font size */
+      padding: min(0.55vw, 3px) min(1.48vw, 8px);   
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(14px, 3.2vw, 18px);
+      font-size: min(3.33vw, 18px);
       color: var(--shadow-brown);
       background: var(--overlay-bg);
       border: 1.5px solid var(--orange);
-      border-radius: 6px;
+      border-radius: min(1.1vw, 6px);
       outline: none;
       transition: box-shadow 0.3s, border-color 0.3s, background 0.3s;
       backdrop-filter: blur(3px);
@@ -298,7 +298,8 @@
     
     textarea.rsvp-input {
       resize: vertical;
-      min-height: 35px;   /* Reduced minimum height of message box */
+      /* Fluid min-height */
+      min-height: min(6.48vw, 35px);   
     }
 
     .rsvp-input:focus {
@@ -310,15 +311,17 @@
     /* Attendance buttons row */
     #attendance-row {
       display: flex;
-      gap: 6px;
-      margin-top: 2px;
+      /* Fluid gap */
+      gap: min(1.1vw, 6px);
+      margin-top: min(0.37vw, 2px);
     }
 
     .attend-btn {
       flex: 1;
-      padding: 4px 4px;
+      /* Fluid padding and font size */
+      padding: min(0.74vw, 4px) min(0.74vw, 4px);
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(13px, 2.8vw, 17px);
+      font-size: min(3.15vw, 17px);
       font-weight: 700;
       letter-spacing: 1px;
       color: var(--shadow-brown);
@@ -342,10 +345,11 @@
     #rsvp-confirm-btn {
       display: block;
       width: 100%;
-      margin-top: 4px;
-      padding: 4px 0;
+      /* Fluid padding, margins, and font size */
+      margin-top: min(0.74vw, 4px);
+      padding: min(0.74vw, 4px) 0;
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(14px, 3.5vw, 20px);
+      font-size: min(3.7vw, 20px);
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -368,13 +372,14 @@
     #rsvp-success {
       display: none;
       text-align: center;
-      font-size: clamp(16px, 4vw, 22px);
+      /* Fluid font size and spacing */
+      font-size: min(4vw, 22px);
+      padding: min(1.85vw, 10px);
+      margin-top: min(1.1vw, 6px);
       font-weight: 700;
       color: var(--shadow-brown);
       background: rgba(255,247,238,0.6);
       border-radius: 10px;
-      padding: 10px;
-      margin-top: 6px;
       backdrop-filter: blur(4px);
       border: 1px solid var(--gold);
     }
