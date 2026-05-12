@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shady & Youssra – Our Days</title>
+
+  <!-- Google Fonts: Amatic SC (ALL typography) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       CSS VARIABLES – edit palette here
+    ============================================================ */
+    :root {
+      --orange:       #D97A4A;
+      --terracotta:   #C96B4B;
+      --cream:        #F4E6D1;
+      --sand:         #E7D2B3;
+      --gold:         #D8B68A;
+      --brown:        #8A5A44;
+      --floral:       #FFF7EE;
+      --peach:        #EBC1A3;
+      --border-red:   #D85C42;
+      --shadow-brown: #6F4A3A;
+
+      --glow:         rgba(217,122,74,0.30);
+      --particle:     rgba(235,193,163,0.50);
+      --overlay-bg:   rgba(255,247,238,0.18);
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Amatic SC', cursive;
+      background: var(--cream);
+      color: var(--shadow-brown);
+      overflow-x: hidden;
+    }
+
+    /* ============================================================
+       LOADING SCREEN
+    ============================================================ */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      background: var(--cream);
+
+      /* Warm watercolor paper texture via radial gradients */
+      background-image:
+        radial-gradient(ellipse at 20% 30%, rgba(235,193,163,0.45) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 70%, rgba(217,122,74,0.20) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(244,230,209,0.90) 0%, transparent 80%);
+
+      transition: opacity 0.9s ease, visibility 0.9s ease;
+    }
+
+    #loading-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Canvas for floating particles on loading screen */
+    #loading-canvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #loading-logo {
+      width: min(260px, 65vw);
+      animation: breathe 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 18px var(--glow));
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes breathe {
+      0%,100% { transform: scale(1)   translateY(0);    opacity: 1;    }
+      50%      { transform: scale(1.06) translateY(-6px); opacity: 0.88; }
+    }
+
+    #loading-text {
+      font-size: clamp(22px, 5vw, 32px);
+      font-weight: 700;
+      color: var(--brown);
+      letter-spacing: 2px;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    #loading-pets {
+      display: flex;
+      gap: 12px;
+      font-size: clamp(26px, 6vw, 40px);
+      position: relative;
+      z-index: 1;
+    }
+
+    #loading-pets span {
+      display: inline-block;
+      animation: petBounce 1.4s ease-in-out infinite;
+    }
+    #loading-pets span:nth-child(1) { animation-delay: 0s;    }
+    #loading-pets span:nth-child(2) { animation-delay: 0.23s; }
+    #loading-pets span:nth-child(3) { animation-delay: 0.46s; }
+    #loading-pets span:nth-child(4) { animation-delay: 0.69s; }
+    #loading-pets span:nth-child(5) { animation-delay: 0.92s; }
+    #loading-pets span:nth-child(6) { animation-delay: 1.15s; }
+
+    @keyframes petBounce {
+      0%,100% { transform: translateY(0)   scale(1);    opacity: 0.7; }
+      50%      { transform: translateY(-10px) scale(1.15); opacity: 1;   }
+    }
+
+    /* Enter Button (Start the celebration) */
+    #enter-btn {
+      padding: 12px 28px;
+      font-family: 'Amatic SC', cursive;
+      font-size: clamp(20px, 5vw, 28px);
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--floral);
+      background: linear-gradient(135deg, var(--orange), var(--terracotta));
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(217,122,74,0.40);
+      transition: transform 0.2s, box-shadow 0.3s, filter 0.3s;
+      position: relative;
+      z-index: 2;
+    }
+    
+    #enter-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 22px rgba(217,122,74,0.55);
+      filter: brightness(1.08);
+    }
+
+    /* ============================================================
+       MAIN WRAPPER
+    ============================================================ */
+    #main-wrapper {
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    #main-wrapper.visible { opacity: 1; }
+
+    /* ============================================================
+       INVITATION CONTAINER
+    ============================================================ */
+    #invitation-container {
+      position: relative;
+      max-width: 540px;
+      margin: 0 auto;
+      animation: invEnter 1.2s cubic-bezier(.22,.68,0,1.2) both;
+      animation-play-state: paused;
+    }
+    #invitation-container.animate { animation-play-state: running; }
+
+    @keyframes invEnter {
+      from { opacity: 0; transform: translateY(40px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0)   scale(1);    }
+    }
+
+    #invitation-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+    }
+
+    /* ============================================================
+       GIF OVERLAY
+    ============================================================ */
+    #gif-overlay {
+      position: absolute;
+      top: 42.6%;
+      left: 15%;
+      width: 500px;
+      pointer-events: none;
+      height: auto;
+    }
+
+    #gif-overlay img {
+      width: 80%;
+      height: 80%;
+      display: block;
+      opacity: 1;
+      mix-blend-mode: normal;
+    }
+
+    /* ============================================================
+       INTERACTIVE OVERLAY
+    ============================================================ */
+    #interactive-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none; 
+    }
+
+    /* ============================================================
+       GOOGLE MAP BUTTON
+    ============================================================ */
+    #map-btn-wrapper {
+      position: absolute;
+      top: 58.7%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40%;       /* ← Made button smaller width */
+      pointer-events: all;
+    }
+
+    #map-btn {
+      display: block;
+      width: 100%;
+      padding: 5px 0;   /* ← Made padding smaller */
+      font-family: 'Amatic SC', cursive;
+      font-size: clamp(13px, 3vw, 17px); /* ← Made font slightly smaller */
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--shadow-brown);
+      background: rgba(244,230,209,0.22);
+      border: 1.5px solid var(--terracotta);
+      border-radius: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+      backdrop-filter: blur(2px);
+    }
+    #map-btn:hover {
+      background: rgba(201,107,75,0.22);
+      box-shadow: 0 0 18px var(--glow);
+      transform: scale(1.04);
+    }
+
+    /* ============================================================
+       RSVP SECTION
+    ============================================================ */
+    #rsvp-wrapper {
+      position: absolute;
+      top: 65.5%;       /* ← Adjusted slightly higher to fit the new message box */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 67%;
+      pointer-events: all;
+    }
+
+    .rsvp-field {
+      margin-bottom: 5px; /* Tightened spacing to fit more fields */
+    }
+
+    .rsvp-label {
+      display: block;
+      font-size: clamp(12px, 2.8vw, 16px);
+      font-weight: 700;
+      color: var(--shadow-brown);
+      letter-spacing: 1px;
+      margin-bottom: 1px;
+      text-transform: uppercase;
+    }
+
+    .rsvp-input {
+      width: 100%;
+      padding: 4px 8px;
+      font-family: 'Amatic SC', cursive;
+      font-size: clamp(14px, 3.2vw, 18px);
+      color: var(--shadow-brown);
+      background: var(--overlay-bg);
+      border: 1.5px solid var(--orange);
+      border-radius: 6px;
+      outline: none;
+      transition: box-shadow 0.3s, border-color 0.3s, background 0.3s;
+      backdrop-filter: blur(3px);
+    }
+    
+    textarea.rsvp-input {
+      resize: vertical;
+      min-height: 40px;
+    }
+
+    .rsvp-input:focus {
+      border-color: var(--terracotta);
+      box-shadow: 0 0 12px rgba(217,122,74,0.35);
+      background: rgba(255,247,238,0.35);
+    }
+
+    /* Attendance buttons row */
+    #attendance-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .attend-btn {
+      flex: 1;
+      padding: 4px 4px;
+      font-family: 'Amatic SC', cursive;
+      font-size: clamp(13px, 2.8vw, 17px);
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--shadow-brown);
+      background: rgba(255,247,238,0.25);
+      border: 1.5px solid var(--orange);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.3s, box-shadow 0.3s, color 0.3s;
+      text-transform: uppercase;
+      backdrop-filter: blur(2px);
+    }
+
+    .attend-btn:hover,
+    .attend-btn.selected {
+      background: var(--orange);
+      color: var(--floral);
+      box-shadow: 0 0 14px var(--glow);
+    }
+
+    /* Confirm button */
+    #rsvp-confirm-btn {
+      display: block;
+      width: 100%;
+      margin-top: 6px;
+      padding: 6px 0;
+      font-family: 'Amatic SC', cursive;
+      font-size: clamp(14px, 3.5vw, 20px);
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--floral);
+      background: linear-gradient(135deg, var(--orange), var(--terracotta));
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s, filter 0.3s;
+      box-shadow: 0 3px 14px rgba(217,122,74,0.40);
+    }
+
+    #rsvp-confirm-btn:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 22px rgba(217,122,74,0.55);
+      filter: brightness(1.08);
+    }
+
+    /* Success message */
+    #rsvp-success {
+      display: none;
+      text-align: center;
+      font-size: clamp(16px, 4vw, 22px);
+      font-weight: 700;
+      color: var(--shadow-brown);
+      background: rgba(255,247,238,0.6);
+      border-radius: 10px;
+      padding: 10px;
+      margin-top: 6px;
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--gold);
+    }
+
+    /* ============================================================
+       MUSIC BUTTON
+    ============================================================ */
+    #music-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 500;
+      padding: 10px 18px;
+      font-family: 'Amatic SC', cursive;
+      font-size: clamp(15px, 3.5vw, 19px);
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--floral);
+      background: var(--orange);
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(217,122,74,0.50);
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    #music-btn:hover {
+      background: var(--terracotta);
+      transform: scale(1.07);
+      box-shadow: 0 6px 26px rgba(201,107,75,0.55);
+    }
+    #music-btn .music-icon { font-size: 1.2em; }
+
+    /* ============================================================
+       FLOATING PARTICLES CANVAS
+    ============================================================ */
+    #particles-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @media (max-width: 560px) {
+      #invitation-container { max-width: 100vw; }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     LOADING SCREEN
+============================================================ -->
+<div id="loading-screen" role="status" aria-label="Loading wedding invitation">
+  <canvas id="loading-canvas"></canvas>
+
+  <img id="loading-logo" src="logo1.png" alt="Shady & Youssra Logo" />
+
+  <div id="loading-text">Loading our special day&nbsp;✦</div>
+
+  <div id="loading-pets" aria-hidden="true">
+    <span>🦮</span>
+    <span>🐈</span>
+    <span>🦮</span>
+    <span>🐈</span>
+    <span>🦮</span>
+    <span>🐈</span>
+  </div>
+
+  <!-- Entry Button (Initially Hidden) -->
+  <button id="enter-btn" style="display: none;" aria-label="Enter the invitation">Start the celebration 🥂</button>
+
+</div>
+
+<!-- ============================================================
+     MAIN INVITATION WRAPPER
+============================================================ -->
+<div id="main-wrapper">
+
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+  <audio id="bg-music" src="music1.mp3" loop preload="auto"></audio>
+
+  <button id="music-btn" aria-label="Toggle background music">
+    <span class="music-icon">♪</span>
+    <span id="music-label">Tap for music</span>
+  </button>
+
+  <div id="invitation-container">
+
+    <img id="invitation-image"
+         src="image1.png"
+         alt="Shady & Youssra Wedding Invitation"
+         draggable="false" />
+
+    <div id="gif-overlay" aria-hidden="true">
+      <img src="gif1.gif" alt="" />
+    </div>
+
+    <div id="interactive-overlay" aria-hidden="false">
+
+      <div id="map-btn-wrapper">
+        <a id="map-btn"
+           href="https://maps.app.goo.gl/hQkobmXuC4TvsC4m9"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Open venue on Google Maps">
+          📍 Open in Google Maps
+        </a>
+      </div>
+
+      <div id="rsvp-wrapper" role="form" aria-label="RSVP Form">
+
+        <div class="rsvp-field">
+          <label class="rsvp-label" for="rsvp-name">Your Name</label>
+          <input class="rsvp-input"
+                 id="rsvp-name"
+                 type="text"
+                 placeholder="Enter your name…"
+                 autocomplete="name" />
+        </div>
+
+        <div class="rsvp-field">
+          <span class="rsvp-label">Will you join us?</span>
+          <div id="attendance-row">
+            <button class="attend-btn" data-value="joyfully"   id="btn-joyfully">Joyfully</button>
+            <button class="attend-btn" data-value="regretfully" id="btn-regretfully">Regretfully</button>
+          </div>
+        </div>
+
+        <div class="rsvp-field">
+          <label class="rsvp-label" for="rsvp-guests">Guests</label>
+          <input class="rsvp-input"
+                 id="rsvp-guests"
+                 type="number"
+                 min="1" max="10"
+                 placeholder="Number of guests…" />
+        </div>
+
+        <!-- NEW: Message to the Couple Field -->
+        <div class="rsvp-field">
+          <label class="rsvp-label" for="rsvp-message">Message for the couple</label>
+          <textarea class="rsvp-input"
+                    id="rsvp-message"
+                    rows="2"
+                    placeholder="Leave a wish..."></textarea>
+        </div>
+
+        <button id="rsvp-confirm-btn" type="button">✦ Confirm ✦</button>
+
+        <div id="rsvp-success" role="alert" aria-live="polite">
+          🎊 We can't wait to celebrate with you! 🎊
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+/* ============================================================
+   ASSET PRELOADING & ENTRY LOGIC
+============================================================ */
+(function () {
+
+  const ASSETS = ['image1.png', 'gif1.gif', 'logo1.png'];
+  let loaded = 0;
+  let fontsReady = false;
+  let assetsReady = false;
+
+  function tryReveal () {
+    if (fontsReady && assetsReady) showEnterButton();
+  }
+
+  /* --- Preload images ---------------------------------------- */
+  ASSETS.forEach(src => {
+    const img = new Image();
+    img.onload  = img.onerror = () => { if (++loaded >= ASSETS.length) { assetsReady = true; tryReveal(); } };
+    img.src = src;
+  });
+
+  /* --- Fonts -------------------------------------------------- */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => { fontsReady = true; tryReveal(); });
+  } else {
+    setTimeout(() => { fontsReady = true; tryReveal(); }, 800);
+  }
+
+  /* --- Fallback: reveal button after 5s no matter what -------- */
+  setTimeout(showEnterButton, 5000);
+
+  function showEnterButton () {
+    showEnterButton = () => {}; // ensure it only runs once
+    
+    document.getElementById('loading-pets').style.display = 'none';
+    document.getElementById('loading-text').innerHTML = 'Ready to celebrate?&nbsp;✦';
+    
+    const enterBtn = document.getElementById('enter-btn');
+    enterBtn.style.display = 'block';
+    enterBtn.style.opacity = '0';
+    requestAnimationFrame(() => {
+      enterBtn.style.transition = 'opacity 0.8s ease';
+      enterBtn.style.opacity = '1';
+    });
+  }
+
+  /* Handle Enter Button Click */
+  document.getElementById('enter-btn').addEventListener('click', () => {
+    revealInvitation();
+    initMusic(true); // Automatically start music because user interacted
+  });
+
+  function revealInvitation () {
+    const loader  = document.getElementById('loading-screen');
+    const wrapper = document.getElementById('main-wrapper');
+    const container = document.getElementById('invitation-container');
+
+    loader.classList.add('hidden');
+    wrapper.classList.add('visible');
+    setTimeout(() => container.classList.add('animate'), 100);
+
+    initParticles();
+  }
+
+})();
+
+/* ============================================================
+   LOADING SCREEN PARTICLES
+============================================================ */
+(function () {
+  const canvas = document.getElementById('loading-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, pts = [];
+
+  function resize () {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 55; i++) {
+    pts.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 4 + 1.5,
+      dx: (Math.random() - 0.5) * 0.4,
+      dy: (Math.random() - 0.5) * 0.4,
+      alpha: Math.random() * 0.5 + 0.1,
+    });
+  }
+
+  (function loop () {
+    ctx.clearRect(0, 0, W, H);
+    pts.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(235,193,163,${p.alpha})`;
+      ctx.fill();
+      p.x += p.dx; p.y += p.dy;
+      if (p.x < 0 || p.x > W) p.dx *= -1;
+      if (p.y < 0 || p.y > H) p.dy *= -1;
+    });
+    requestAnimationFrame(loop);
+  })();
+})();
+
+/* ============================================================
+   BACKGROUND PARTICLES (main page)
+============================================================ */
+function initParticles () {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, pts = [];
+
+  function resize () {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 70; i++) {
+    pts.push({
+      x:     Math.random() * window.innerWidth,
+      y:     Math.random() * window.innerHeight,
+      r:     Math.random() * 3 + 1,
+      dx:    (Math.random() - 0.5) * 0.35,
+      dy:    -(Math.random() * 0.5 + 0.2), 
+      alpha: Math.random() * 0.35 + 0.08,
+      pulse: Math.random() * Math.PI * 2,
+    });
+  }
+
+  (function loop (t) {
+    ctx.clearRect(0, 0, W, H);
+    pts.forEach(p => {
+      p.pulse += 0.018;
+      const a = p.alpha * (0.7 + 0.3 * Math.sin(p.pulse));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(235,193,163,${a})`;
+      ctx.fill();
+      p.x += p.dx; p.y += p.dy;
+      if (p.x < 0) p.x = W;
+      if (p.x > W) p.x = 0;
+      if (p.y < -10) p.y = H + 10;
+    });
+    requestAnimationFrame(loop);
+  })();
+}
+
+/* ============================================================
+   MUSIC PLAYER
+============================================================ */
+function initMusic (startPlaying = false) {
+  const audio  = document.getElementById('bg-music');
+  const btn    = document.getElementById('music-btn');
+  const label  = document.getElementById('music-label');
+  let playing  = false;
+
+  audio.volume = 0;
+
+  if (startPlaying) {
+    audio.play().then(() => {
+      playing = true;
+      fadeVolume(audio, 0, 0.45, 2500); 
+      label.textContent = '♫ Playing';
+    }).catch(() => {
+      label.textContent = 'Tap for music';
+    });
+  }
+
+  btn.addEventListener('click', () => {
+    if (playing) {
+      audio.pause();
+      playing = false;
+      label.textContent = 'Tap for music';
+      btn.style.background = 'var(--terracotta)';
+    } else {
+      audio.play().then(() => {
+        playing = true;
+        fadeVolume(audio, audio.volume, 0.45, 1500);
+        label.textContent = '♫ Playing';
+        btn.style.background = 'var(--orange)';
+      }).catch(() => {});
+    }
+  });
+}
+
+function fadeVolume (audioEl, from, to, duration) {
+  const steps = 60;
+  const stepTime = duration / steps;
+  let step = 0;
+  audioEl.volume = from;
+  const timer = setInterval(() => {
+    step++;
+    audioEl.volume = Math.min(1, from + (to - from) * (step / steps));
+    if (step >= steps) clearInterval(timer);
+  }, stepTime);
+}
+
+/* ============================================================
+   RSVP INTERACTIONS
+============================================================ */
+(function () {
+  let selectedAttendance = '';
+
+  const joyBtn  = document.getElementById('btn-joyfully');
+  const regBtn  = document.getElementById('btn-regretfully');
+  const confirm = document.getElementById('rsvp-confirm-btn');
+  const success = document.getElementById('rsvp-success');
+
+  function selectAttend (val) {
+    selectedAttendance = val;
+    joyBtn.classList.toggle('selected', val === 'joyfully');
+    regBtn.classList.toggle('selected', val === 'regretfully');
+  }
+
+  joyBtn.addEventListener('click', () => selectAttend('joyfully'));
+  regBtn.addEventListener('click', () => selectAttend('regretfully'));
+
+  confirm.addEventListener('click', () => {
+    const name    = document.getElementById('rsvp-name').value.trim();
+    const guests  = document.getElementById('rsvp-guests').value;
+    const message = document.getElementById('rsvp-message').value.trim();
+
+    if (!name) {
+      document.getElementById('rsvp-name').focus();
+      document.getElementById('rsvp-name').style.borderColor = 'var(--border-red)';
+      setTimeout(() => document.getElementById('rsvp-name').style.borderColor = '', 1500);
+      return;
+    }
+    if (!selectedAttendance) {
+      joyBtn.style.boxShadow = '0 0 12px var(--border-red)';
+      setTimeout(() => { joyBtn.style.boxShadow = ''; }, 1500);
+      return;
+    }
+
+    console.log('RSVP submitted:', { name, attendance: selectedAttendance, guests, message });
+
+    /* Show success */
+    confirm.style.display = 'none';
+    success.style.display  = 'block';
+    success.style.animation = 'none';
+    success.style.opacity   = '0';
+    requestAnimationFrame(() => {
+      success.style.transition = 'opacity 0.6s ease';
+      success.style.opacity    = '1';
+    });
+  });
+
+})();
+
+/* ============================================================
+   SUBTLE PARALLAX on scroll (invitation floats slightly)
+============================================================ */
+(function () {
+  const container = document.getElementById('invitation-container');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    container.style.transform = `translateY(${y * 0.03}px)`;
+  }, { passive: true });
+})();
+</script>
+
+</body>
+</html>
