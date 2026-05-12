@@ -371,6 +371,8 @@
     /* Transparent Minimal Success message container */
     #rsvp-success {
       display: none;
+      position: absolute;
+      inset: 0;
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -568,7 +570,7 @@
 </div>
 
 
-<>
+<script>
 /* ============================================================
    ASSET PRELOADING & ENTRY LOGIC
 ============================================================ */
@@ -774,8 +776,8 @@ function fadeVolume (audioEl, from, to, duration) {
 
 /* --- GOOGLE SHEETS SETUP INSTRUCTIONS ---
   1. Open a new Google Sheet.
-  2. Go to "Extensions" > "Apps ".
-  3. Delete any code there and paste this exact :
+  2. Go to "Extensions" > "Apps Script".
+  3. Delete any code there and paste this exact script:
 
       function doPost(e) {
         var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -844,8 +846,9 @@ const GOOGLE_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzL_u
       },
       body: JSON.stringify(rsvpData)
     }).then(() => {
-      // Hide all input fields smoothly
-      formFields.style.display = 'none';
+      // Hide all input fields smoothly but keep layout space to center success message
+      formFields.style.visibility = 'hidden';
+      formFields.style.opacity = '0';
       
       // Show checkmark success
       success.style.display  = 'flex';
@@ -859,7 +862,8 @@ const GOOGLE_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzL_u
       console.error('Error submitting RSVP:', error);
       // Fallback: Show success anyway so user experience is uninterrupted, 
       // even if there's a strict browser ad-blocker blocking the fetch
-      formFields.style.display = 'none';
+      formFields.style.visibility = 'hidden';
+      formFields.style.opacity = '0';
       success.style.display  = 'flex';
       success.style.opacity  = '1';
     });
