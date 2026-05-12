@@ -58,7 +58,6 @@
       justify-content: center;
       gap: 24px;
       background: var(--cream);
-      width: 100%;
 
       /* Warm watercolor paper texture via radial gradients */
       background-image:
@@ -129,29 +128,28 @@
       50%      { transform: translateY(-10px) scale(1.15); opacity: 1;   }
     }
 
-    /* Enter Button (Start the celebration) - MINIMAL UPDATE */
+    /* Enter Button (Start the celebration) */
     #enter-btn {
-      padding: 10px 26px;
+      padding: 12px 28px;
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(20px, 5vw, 26px);
+      font-size: clamp(20px, 5vw, 28px);
       font-weight: 700;
       letter-spacing: 2px;
-      color: var(--brown);
-      background: rgba(244, 230, 209, 0.4); /* Transparent/glass effect */
-      border: 1px solid var(--terracotta);
-      border-radius: 40px; /* Pill shape */
+      color: var(--floral);
+      background: linear-gradient(135deg, var(--orange), var(--terracotta));
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow: none; /* Removed heavy shadow */
-      backdrop-filter: blur(5px);
-      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(217,122,74,0.40);
+      transition: transform 0.2s, box-shadow 0.3s, filter 0.3s;
       position: relative;
       z-index: 2;
     }
     
     #enter-btn:hover {
-      transform: scale(1.03);
-      background: rgba(201, 107, 75, 0.15); /* Slight color tint on hover */
-      border-color: var(--orange);
+      transform: scale(1.05);
+      box-shadow: 0 6px 22px rgba(217,122,74,0.55);
+      filter: brightness(1.08);
     }
 
     /* ============================================================
@@ -160,8 +158,6 @@
     #main-wrapper {
       opacity: 0;
       transition: opacity 1s ease;
-      overflow-x: hidden; /* Ensures no horizontal scroll from animations */
-      width: 100%;
     }
     #main-wrapper.visible { opacity: 1; }
 
@@ -190,24 +186,22 @@
     }
 
     /* ============================================================
-       GIF OVERLAY - FIXED SIZING FOR MOBILE
+       GIF OVERLAY
     ============================================================ */
     #gif-overlay {
       position: absolute;
       top: 42.6%;
-      left: 50%; /* Centered using 50% left & transform */
-      transform: translateX(-50%);
-      width: 90%; /* Relative width instead of fixed 500px */
+      left: 15%;
+      width: 500px;
       pointer-events: none;
       height: auto;
-      display: flex;
-      justify-content: center;
     }
 
     #gif-overlay img {
       width: 80%;
-      height: auto;
+      height: 80%;
       display: block;
+      opacity: 1;
       mix-blend-mode: normal;
     }
 
@@ -225,19 +219,19 @@
     ============================================================ */
     #map-btn-wrapper {
       position: absolute;
-      top: 58.7%;
+      top: 57.5%;
       left: 50%;
       transform: translateX(-50%);
-      width: 40%;
+      width: 40%;       /* ← Made button smaller width */
       pointer-events: all;
     }
 
     #map-btn {
       display: block;
       width: 100%;
-      padding: 5px 0;
+      padding: 5px 0;   /* ← Made padding smaller */
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(13px, 3vw, 17px);
+      font-size: clamp(13px, 3vw, 17px); /* ← Made font slightly smaller */
       font-weight: 700;
       letter-spacing: 1.5px;
       color: var(--shadow-brown);
@@ -261,20 +255,20 @@
     ============================================================ */
     #rsvp-wrapper {
       position: absolute;
-      top: 65.5%;
+      top: 63%;       /* ← Adjusted slightly higher to fit the new message box */
       left: 50%;
       transform: translateX(-50%);
-      width: 63%; /* Slightly narrower to fit inside the image frame securely */
+      width: 65%;
       pointer-events: all;
     }
 
     .rsvp-field {
-      margin-bottom: 4px;
+      margin-bottom: 5px; /* Tightened spacing to fit more fields */
     }
 
     .rsvp-label {
       display: block;
-      font-size: clamp(11px, 2.6vw, 15px);
+      font-size: clamp(12px, 2.8vw, 16px);
       font-weight: 700;
       color: var(--shadow-brown);
       letter-spacing: 1px;
@@ -284,9 +278,9 @@
 
     .rsvp-input {
       width: 100%;
-      padding: 3px 8px;
+      padding: 4px 8px;
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(13px, 3.2vw, 17px);
+      font-size: clamp(14px, 3.2vw, 18px);
       color: var(--shadow-brown);
       background: var(--overlay-bg);
       border: 1.5px solid var(--orange);
@@ -298,7 +292,7 @@
     
     textarea.rsvp-input {
       resize: vertical;
-      min-height: 36px;
+      min-height: 40px;
     }
 
     .rsvp-input:focus {
@@ -316,9 +310,9 @@
 
     .attend-btn {
       flex: 1;
-      padding: 3px 4px;
+      padding: 4px 4px;
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(12px, 2.8vw, 16px);
+      font-size: clamp(13px, 2.8vw, 17px);
       font-weight: 700;
       letter-spacing: 1px;
       color: var(--shadow-brown);
@@ -342,10 +336,10 @@
     #rsvp-confirm-btn {
       display: block;
       width: 100%;
-      margin-top: 5px;
-      padding: 4px 0;
+      margin-top: 6px;
+      padding: 6px 0;
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(14px, 3.5vw, 19px);
+      font-size: clamp(14px, 3.5vw, 20px);
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -368,13 +362,13 @@
     #rsvp-success {
       display: none;
       text-align: center;
-      font-size: clamp(15px, 3.5vw, 20px);
+      font-size: clamp(16px, 4vw, 22px);
       font-weight: 700;
       color: var(--shadow-brown);
       background: rgba(255,247,238,0.6);
       border-radius: 10px;
-      padding: 8px;
-      margin-top: 5px;
+      padding: 10px;
+      margin-top: 6px;
       backdrop-filter: blur(4px);
       border: 1px solid var(--gold);
     }
@@ -420,22 +414,8 @@
       z-index: 1;
     }
 
-    /* ============================================================
-       MOBILE ADJUSTMENTS
-    ============================================================ */
     @media (max-width: 560px) {
-      #invitation-container { 
-        width: 100%; 
-        max-width: 100%; /* Avoids horizontal scroll bugs from 100vw */
-      }
-      
-      #rsvp-wrapper {
-        width: 66%; /* Provides clean margins inside the invitation frame */
-      }
-
-      .rsvp-input {
-        padding: 2px 6px; /* Tightens input padding so it doesn't get too tall */
-      }
+      #invitation-container { max-width: 100vw; }
     }
 
   </style>
@@ -483,7 +463,7 @@
   <div id="invitation-container">
 
     <img id="invitation-image"
-         src="image1.png"
+         src="https://drive.google.com/thumbnail?id=1wKADt5pimSAJcfj0WOU7UZzgaBwmNfmn&sz=w2000"
          alt="Shady & Youssra Wedding Invitation"
          draggable="false" />
 
@@ -495,7 +475,7 @@
 
       <div id="map-btn-wrapper">
         <a id="map-btn"
-           href="https://maps.app.goo.gl/hQkobmXuC4TvsC4m9"
+           href="https://www.google.com/maps/search/La+Cabana+Blue+Blue"
            target="_blank"
            rel="noopener noreferrer"
            aria-label="Open venue on Google Maps">
@@ -531,7 +511,7 @@
                  placeholder="Number of guests…" />
         </div>
 
-        <!-- Message to the Couple Field -->
+        <!-- NEW: Message to the Couple Field -->
         <div class="rsvp-field">
           <label class="rsvp-label" for="rsvp-message">Message for the couple</label>
           <textarea class="rsvp-input"
@@ -554,13 +534,14 @@
 
 </div>
 
+
 <script>
 /* ============================================================
    ASSET PRELOADING & ENTRY LOGIC
 ============================================================ */
 (function () {
 
-  const ASSETS = ['image1.png', 'gif1.gif', 'logo1.png'];
+  const ASSETS = ['https://drive.google.com/thumbnail?id=1wKADt5pimSAJcfj0WOU7UZzgaBwmNfmn&sz=w2000', 'gif1.gif', 'logo1.png'];
   let loaded = 0;
   let fontsReady = false;
   let assetsReady = false;
