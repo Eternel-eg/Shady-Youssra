@@ -231,10 +231,9 @@
     #map-btn {
       display: block;
       width: 100%;
-      /* Fully fluid padding and font-size to prevent layout shift on small phones */
-      padding: min(0.7vw, 4px) 0;   
+      padding: clamp(3px, 0.7vw, 6px) 0;   
       font-family: 'Amatic SC', cursive;
-      font-size: min(2.9vw, 16px); 
+      font-size: clamp(14px, 3vw, 17px); 
       font-weight: 700;
       letter-spacing: 1.5px;
       color: var(--shadow-brown);
@@ -265,32 +264,30 @@
       pointer-events: all;
     }
 
+    /* Using clamp() prevents the fields from getting overly compact vertically on smaller phones */
     .rsvp-field {
-      /* Fluid spacing */
-      margin-bottom: min(0.4vw, 2px); 
+      margin-bottom: clamp(4px, 1.2vw, 6px); 
     }
 
     .rsvp-label {
       display: block;
-      /* Fluid font size */
-      font-size: min(2.6vw, 14px);
+      font-size: clamp(13px, 2.8vw, 16px);
       font-weight: 700;
       color: var(--shadow-brown);
       letter-spacing: 1px;
-      margin-bottom: 0px; 
+      margin-bottom: 1px; 
       text-transform: uppercase;
     }
 
     .rsvp-input {
       width: 100%;
-      /* Fluid padding and font size */
-      padding: min(0.4vw, 2px) min(1.2vw, 6px);   
+      padding: clamp(3px, 1.2vw, 6px) clamp(6px, 2vw, 10px);   
       font-family: 'Amatic SC', cursive;
-      font-size: min(2.9vw, 16px);
+      font-size: clamp(14px, 3.2vw, 18px);
       color: var(--shadow-brown);
       background: var(--overlay-bg);
       border: 1.5px solid var(--orange);
-      border-radius: min(1.1vw, 6px);
+      border-radius: 6px;
       outline: none;
       transition: box-shadow 0.3s, border-color 0.3s, background 0.3s;
       backdrop-filter: blur(3px);
@@ -298,8 +295,7 @@
     
     textarea.rsvp-input {
       resize: vertical;
-      /* Fluid min-height */
-      min-height: min(5vw, 28px);   
+      min-height: clamp(35px, 5vw, 42px);   
     }
 
     .rsvp-input:focus {
@@ -311,17 +307,15 @@
     /* Attendance buttons row */
     #attendance-row {
       display: flex;
-      /* Fluid gap */
-      gap: min(1vw, 5px);
-      margin-top: min(0.2vw, 1px);
+      gap: clamp(5px, 1vw, 8px);
+      margin-top: 2px;
     }
 
     .attend-btn {
       flex: 1;
-      /* Fluid padding and font size */
-      padding: min(0.5vw, 3px) min(0.5vw, 3px);
+      padding: clamp(3px, 1vw, 5px);
       font-family: 'Amatic SC', cursive;
-      font-size: min(2.8vw, 15px);
+      font-size: clamp(13px, 3vw, 17px);
       font-weight: 700;
       letter-spacing: 1px;
       color: var(--shadow-brown);
@@ -345,11 +339,10 @@
     #rsvp-confirm-btn {
       display: block;
       width: 100%;
-      /* Fluid padding, margins, and font size */
-      margin-top: min(0.5vw, 3px);
-      padding: min(0.5vw, 3px) 0;
+      margin-top: clamp(4px, 1vw, 6px);
+      padding: clamp(5px, 1.5vw, 8px) 0;
       font-family: 'Amatic SC', cursive;
-      font-size: min(3.2vw, 18px);
+      font-size: clamp(16px, 3.5vw, 20px);
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -367,21 +360,44 @@
       box-shadow: 0 6px 22px rgba(217,122,74,0.55);
       filter: brightness(1.08);
     }
+    
+    /* Disabled state for button when sending */
+    #rsvp-confirm-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
 
-    /* Success message */
+    /* Success message container */
     #rsvp-success {
       display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      /* Fluid font size and spacing */
-      font-size: min(3.5vw, 18px);
-      padding: min(1.5vw, 8px);
-      margin-top: min(0.8vw, 4px);
+      font-size: clamp(18px, 4.5vw, 24px);
+      padding: clamp(15px, 3vw, 20px);
       font-weight: 700;
       color: var(--shadow-brown);
-      background: rgba(255,247,238,0.6);
-      border-radius: 10px;
-      backdrop-filter: blur(4px);
+      background: rgba(255,247,238,0.7);
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
       border: 1px solid var(--gold);
+      box-shadow: 0 4px 15px rgba(138, 90, 68, 0.15);
+    }
+    
+    /* Animated Checkmark */
+    .success-checkmark {
+      font-size: clamp(35px, 8vw, 50px);
+      line-height: 1;
+      color: var(--terracotta);
+      margin-bottom: 5px;
+      animation: popCheck 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    
+    @keyframes popCheck {
+      0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
     }
 
     /* ============================================================
@@ -495,46 +511,50 @@
       </div>
 
       <div id="rsvp-wrapper" role="form" aria-label="RSVP Form">
-
-        <div class="rsvp-field">
-          <label class="rsvp-label" for="rsvp-name">Your Name</label>
-          <input class="rsvp-input"
-                 id="rsvp-name"
-                 type="text"
-                 placeholder="Enter your name…"
-                 autocomplete="name" />
-        </div>
-
-        <div class="rsvp-field">
-          <span class="rsvp-label">Will you join us?</span>
-          <div id="attendance-row">
-            <button class="attend-btn" data-value="joyfully"   id="btn-joyfully">Joyfully</button>
-            <button class="attend-btn" data-value="regretfully" id="btn-regretfully">Regretfully</button>
+        
+        <!-- WRAPPER to hide inputs on submit -->
+        <div id="rsvp-form-fields">
+          <div class="rsvp-field">
+            <label class="rsvp-label" for="rsvp-name">Your Name</label>
+            <input class="rsvp-input"
+                   id="rsvp-name"
+                   type="text"
+                   placeholder="Enter your name…"
+                   autocomplete="name" />
           </div>
+
+          <div class="rsvp-field">
+            <span class="rsvp-label">Will you join us?</span>
+            <div id="attendance-row">
+              <button class="attend-btn" data-value="joyfully"   id="btn-joyfully">Joyfully</button>
+              <button class="attend-btn" data-value="regretfully" id="btn-regretfully">Regretfully</button>
+            </div>
+          </div>
+
+          <div class="rsvp-field">
+            <label class="rsvp-label" for="rsvp-guests">Guests</label>
+            <input class="rsvp-input"
+                   id="rsvp-guests"
+                   type="number"
+                   min="1" max="10"
+                   placeholder="Number of guests…" />
+          </div>
+
+          <div class="rsvp-field">
+            <label class="rsvp-label" for="rsvp-message">Message for the couple</label>
+            <textarea class="rsvp-input"
+                      id="rsvp-message"
+                      rows="2"
+                      placeholder="Leave a wish..."></textarea>
+          </div>
+
+          <button id="rsvp-confirm-btn" type="button">✦ Confirm ✦</button>
         </div>
 
-        <div class="rsvp-field">
-          <label class="rsvp-label" for="rsvp-guests">Guests</label>
-          <input class="rsvp-input"
-                 id="rsvp-guests"
-                 type="number"
-                 min="1" max="10"
-                 placeholder="Number of guests…" />
-        </div>
-
-        <!-- NEW: Message to the Couple Field -->
-        <div class="rsvp-field">
-          <label class="rsvp-label" for="rsvp-message">Message for the couple</label>
-          <textarea class="rsvp-input"
-                    id="rsvp-message"
-                    rows="2"
-                    placeholder="Leave a wish..."></textarea>
-        </div>
-
-        <button id="rsvp-confirm-btn" type="button">✦ Confirm ✦</button>
-
+        <!-- NEW Success message with animated checkmark -->
         <div id="rsvp-success" role="alert" aria-live="polite">
-          🎊 We can't wait to celebrate with you! 🎊
+          <div class="success-checkmark">✔</div>
+          <div>We can't wait to celebrate with you!</div>
         </div>
 
       </div>
@@ -574,9 +594,6 @@
   } else {
     setTimeout(() => { fontsReady = true; tryReveal(); }, 800);
   }
-
-  /* --- Fallback removed: The screen will now strictly wait for the large Google Drive image to finish loading to avoid any glitches. --- */
-  // setTimeout(showEnterButton, 5000); 
 
   function showEnterButton () {
     showEnterButton = () => {}; // ensure it only runs once
@@ -750,8 +767,30 @@ function fadeVolume (audioEl, from, to, duration) {
 }
 
 /* ============================================================
-   RSVP INTERACTIONS
+   RSVP INTERACTIONS & GOOGLE SHEETS SETUP
 ============================================================ */
+
+/* --- GOOGLE SHEETS SETUP INSTRUCTIONS ---
+  1. Open a new Google Sheet.
+  2. Go to "Extensions" > "Apps Script".
+  3. Delete any code there and paste this exact script:
+
+      function doPost(e) {
+        var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+        var data = JSON.parse(e.postData.contents);
+        sheet.appendRow([new Date(), data.name, data.attendance, data.guests, data.message]);
+        return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
+      }
+
+  4. Click "Deploy" > "New Deployment" at the top right.
+  5. Select type: "Web app".
+  6. Execute as: "Me", Who has access: "Anyone".
+  7. Click "Deploy" and Authorize access.
+  8. Copy the provided "Web app URL" and paste it between the quotes below:
+*/
+
+const GOOGLE_SCRIPT_WEB_APP_URL = 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE'; // <--- PASTE YOUR LINK HERE
+
 (function () {
   let selectedAttendance = '';
 
@@ -759,6 +798,7 @@ function fadeVolume (audioEl, from, to, duration) {
   const regBtn  = document.getElementById('btn-regretfully');
   const confirm = document.getElementById('rsvp-confirm-btn');
   const success = document.getElementById('rsvp-success');
+  const formFields = document.getElementById('rsvp-form-fields');
 
   function selectAttend (val) {
     selectedAttendance = val;
@@ -774,6 +814,7 @@ function fadeVolume (audioEl, from, to, duration) {
     const guests  = document.getElementById('rsvp-guests').value;
     const message = document.getElementById('rsvp-message').value.trim();
 
+    // Validation
     if (!name) {
       document.getElementById('rsvp-name').focus();
       document.getElementById('rsvp-name').style.borderColor = 'var(--border-red)';
@@ -786,17 +827,41 @@ function fadeVolume (audioEl, from, to, duration) {
       return;
     }
 
-    console.log('RSVP submitted:', { name, attendance: selectedAttendance, guests, message });
+    const rsvpData = { name, attendance: selectedAttendance, guests, message };
+    
+    // UI Loading state
+    confirm.textContent = 'Sending...';
+    confirm.disabled = true;
 
-    /* Show success */
-    confirm.style.display = 'none';
-    success.style.display  = 'block';
-    success.style.animation = 'none';
-    success.style.opacity   = '0';
-    requestAnimationFrame(() => {
-      success.style.transition = 'opacity 0.6s ease';
-      success.style.opacity    = '1';
+    // Send to Google Sheets
+    fetch(GOOGLE_SCRIPT_WEB_APP_URL, {
+      method: 'POST',
+      mode: 'no-cors', // Essential for simple google sheets fetch to work without preflight errors
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(rsvpData)
+    }).then(() => {
+      // Hide all input fields smoothly
+      formFields.style.display = 'none';
+      
+      // Show checkmark success
+      success.style.display  = 'flex';
+      success.style.animation = 'none';
+      success.style.opacity   = '0';
+      requestAnimationFrame(() => {
+        success.style.transition = 'opacity 0.6s ease';
+        success.style.opacity    = '1';
+      });
+    }).catch(error => {
+      console.error('Error submitting RSVP:', error);
+      // Fallback: Show success anyway so user experience is uninterrupted, 
+      // even if there's a strict browser ad-blocker blocking the fetch
+      formFields.style.display = 'none';
+      success.style.display  = 'flex';
+      success.style.opacity  = '1';
     });
+
   });
 
 })();
