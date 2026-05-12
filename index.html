@@ -264,26 +264,26 @@
       pointer-events: all;
     }
 
-    /* Using clamp() prevents the fields from getting overly compact vertically on smaller phones */
+    /* Shrunk height by ~10% using smaller minimums in clamp() */
     .rsvp-field {
-      margin-bottom: clamp(4px, 1.2vw, 6px); 
+      margin-bottom: clamp(2px, 1vw, 4px); 
     }
 
     .rsvp-label {
       display: block;
-      font-size: clamp(13px, 2.8vw, 16px);
+      font-size: clamp(12px, 2.5vw, 15px);
       font-weight: 700;
       color: var(--shadow-brown);
       letter-spacing: 1px;
-      margin-bottom: 1px; 
+      margin-bottom: 0px; 
       text-transform: uppercase;
     }
 
     .rsvp-input {
       width: 100%;
-      padding: clamp(3px, 1.2vw, 6px) clamp(6px, 2vw, 10px);   
+      padding: clamp(2px, 0.8vw, 4px) clamp(6px, 2vw, 10px);   
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(14px, 3.2vw, 18px);
+      font-size: clamp(13px, 3vw, 16px);
       color: var(--shadow-brown);
       background: var(--overlay-bg);
       border: 1.5px solid var(--orange);
@@ -295,7 +295,7 @@
     
     textarea.rsvp-input {
       resize: vertical;
-      min-height: clamp(35px, 5vw, 42px);   
+      min-height: clamp(25px, 4vw, 32px);   
     }
 
     .rsvp-input:focus {
@@ -308,14 +308,14 @@
     #attendance-row {
       display: flex;
       gap: clamp(5px, 1vw, 8px);
-      margin-top: 2px;
+      margin-top: 1px;
     }
 
     .attend-btn {
       flex: 1;
-      padding: clamp(3px, 1vw, 5px);
+      padding: clamp(2px, 0.8vw, 4px);
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(13px, 3vw, 17px);
+      font-size: clamp(12px, 2.8vw, 16px);
       font-weight: 700;
       letter-spacing: 1px;
       color: var(--shadow-brown);
@@ -339,10 +339,10 @@
     #rsvp-confirm-btn {
       display: block;
       width: 100%;
-      margin-top: clamp(4px, 1vw, 6px);
-      padding: clamp(5px, 1.5vw, 8px) 0;
+      margin-top: clamp(2px, 0.8vw, 4px);
+      padding: clamp(3px, 1vw, 5px) 0;
       font-family: 'Amatic SC', cursive;
-      font-size: clamp(16px, 3.5vw, 20px);
+      font-size: clamp(15px, 3.2vw, 18px);
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -368,7 +368,7 @@
       transform: none;
     }
 
-    /* Success message container */
+    /* Transparent Minimal Success message container */
     #rsvp-success {
       display: none;
       flex-direction: column;
@@ -376,28 +376,30 @@
       justify-content: center;
       text-align: center;
       font-size: clamp(18px, 4.5vw, 24px);
-      padding: clamp(15px, 3vw, 20px);
+      padding: clamp(10px, 2vw, 15px);
       font-weight: 700;
       color: var(--shadow-brown);
-      background: rgba(255,247,238,0.7);
-      border-radius: 12px;
-      backdrop-filter: blur(6px);
-      border: 1px solid var(--gold);
-      box-shadow: 0 4px 15px rgba(138, 90, 68, 0.15);
+      background: transparent;
     }
     
-    /* Animated Checkmark */
-    .success-checkmark {
-      font-size: clamp(35px, 8vw, 50px);
-      line-height: 1;
+    /* Animated Minimal Circular Checkmark */
+    .success-checkmark-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(40px, 8vw, 50px);
+      height: clamp(40px, 8vw, 50px);
+      border: 2px solid var(--terracotta);
+      border-radius: 50%;
+      margin-bottom: 8px;
       color: var(--terracotta);
-      margin-bottom: 5px;
+      font-size: clamp(20px, 5vw, 28px);
       animation: popCheck 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
     
     @keyframes popCheck {
-      0% { transform: scale(0) rotate(-20deg); opacity: 0; }
-      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     /* ============================================================
@@ -551,9 +553,9 @@
           <button id="rsvp-confirm-btn" type="button">✦ Confirm ✦</button>
         </div>
 
-        <!-- NEW Success message with animated checkmark -->
+        <!-- NEW Success message with transparent animated checkmark circle -->
         <div id="rsvp-success" role="alert" aria-live="polite">
-          <div class="success-checkmark">✔</div>
+          <div class="success-checkmark-circle">✓</div>
           <div>We can't wait to celebrate with you!</div>
         </div>
 
